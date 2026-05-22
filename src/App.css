@@ -1,0 +1,79 @@
+/* Global styles */
+body {
+  background-color: #e8f7f5;
+  color: #2c3e50;
+  min-height: 100vh;
+}
+
+/* Card styling */
+.card {
+  background-color: #ffffff;
+  border: 1px solid #7cc8c0;
+  color: #2c3e50;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  border-color: #148f77;
+  box-shadow: 0 4px 15px rgba(20, 143, 119, 0.3);
+}
+
+.card-title {
+  color: #148f77;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #179ca5 !important;
+}
+
+.navbar-brand,
+.nav-link {
+  color: #ffffff !important;
+}
+
+.nav-link:hover {
+  color: #d0ece7 !important;
+}
+
+/* Buttons */
+.btn-dark {
+  background-color: #148b8f !important;
+  border-color: #148b8f !important;
+}
+
+.btn-dark:hover {
+  background-color: #1abc9c !important;
+  border-color: #1abc9c !important;
+}
+
+/* Page container */
+.page-container {
+  padding: 20px 40px;
+}
+
+/* Headings */
+h1,
+h2,
+h3 {
+  color: #148b8f;
+}
+
+.btn-outline-dark {
+  color: #148f77 !important;
+  border-color: #148f77 !important;
+}
+
+.btn-outline-dark:hover {
+  background-color: #148f77 !important;
+  border-color: #148f77 !important;
+  color: #ffffff !important;
+}
+
+/* Input focus color */
+.form-control:focus,
+.form-select:focus {
+  border-color: #148f77 !important;
+  box-shadow: 0 0 0 0.25rem rgba(20, 143, 119, 0.25) !important;
+}
