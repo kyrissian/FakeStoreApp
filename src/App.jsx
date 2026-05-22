@@ -10,14 +10,19 @@ import "./App.css";
 function App() {
   return (
     <>
+      <a className="skip-link" href="#main-content">
+        Skip to main content
+      </a>
       <NavBar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/products" element={<ProductList />} />
-        <Route path="/products/:id" element={<ProductDetails />} />
-        <Route path="/add-product" element={<AddProduct />} />
-        <Route path="/edit-product/:id" element={<EditProduct />} />
-      </Routes>
+      <main id="main-content" tabIndex={-1}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/products" element={<ProductList />} />
+          <Route path="/products/:id" element={<ProductDetails />} />
+          <Route path="/add-product" element={<AddProduct />} />
+          <Route path="/edit-product/:id" element={<EditProduct />} />
+        </Routes>
+      </main>
     </>
   );
 }

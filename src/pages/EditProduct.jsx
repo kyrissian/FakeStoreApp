@@ -6,16 +6,12 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import Spinner from "react-bootstrap/Spinner";
-
-const toTwoDecimalPrice = (value) => {
-  const numericValue = Number(value);
-
-  if (!Number.isFinite(numericValue)) {
-    return "";
-  }
-
-  return numericValue.toFixed(2);
-};
+import {
+  CATEGORY_OPTIONS,
+  clearFakeStoreCache,
+  fetchProductById,
+  toTwoDecimalPrice,
+} from "../utils/fakestore";
 
 function EditProduct() {
   const { id } = useParams();
@@ -32,10 +28,9 @@ function EditProduct() {
   const [validated, setValidated] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`https://fakestoreapi.com/products/${id}`)
-      .then((response) => {
-        const { title, price, description, category } = response.data;
+    fetchProductById(id)
+      .then((productData) => {
+        const { title, price, description, category } = productData;
         setFormData({
           title,
           price: toTwoDecimalPrice(price),
@@ -87,6 +82,7 @@ function EditProduct() {
         );
         setSuccess(`Product "${response.data.title}" updated successfully!`);
         setError(null);
+        clearFakeStoreCache();
       } catch (err) {
         setError(`Failed to update product: ${err.message}`);
         setSuccess(null);
@@ -187,10 +183,11 @@ function EditProduct() {
             <option hidden value="">
               Choose a category...
             </option>
-            <option>electronics</option>
-            <option>jewelery</option>
-            <option>men's clothing</option>
-            <option>women's clothing</option>
+            {CATEGORY_OPTIONS.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
           </Form.Select>
           <Form.Control.Feedback type="invalid">
             Please select a category

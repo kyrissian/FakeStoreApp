@@ -5,12 +5,19 @@ import Container from "react-bootstrap/Container";
 
 function NavBar() {
   return (
-    <Navbar bg="custom" variant="dark" expand="lg" className="p-3 mb-4">
+    <Navbar
+      bg="custom"
+      variant="dark"
+      expand="lg"
+      className="p-3 mb-4 app-navbar"
+    >
       <Container>
-        <Navbar.Brand href="/">FakeStore</Navbar.Brand>
+        <Navbar.Brand as={NavLink} to="/" end>
+          FakeStore
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav>
+          <Nav className="ms-auto">
             <Nav.Link as={NavLink} to="/">
               Home
             </Nav.Link>

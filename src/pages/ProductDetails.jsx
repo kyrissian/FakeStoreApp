@@ -8,12 +8,11 @@ import Modal from "react-bootstrap/Modal";
 import Badge from "react-bootstrap/Badge";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
-const formatPrice = (value) =>
-  new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(Number(value));
+import {
+  fetchProductById,
+  formatPrice,
+  clearFakeStoreCache,
+} from "../utils/fakestore";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -24,14 +23,14 @@ function ProductDetails() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    axios
-      .get(`https://fakestoreapi.com/products/${id}`)
-      .then((response) => {
-        setProduct(response.data);
-        setLoading(false);
+    fetchProductById(id)
+      .then((productData) => {
+        setProduct(productData);
       })
       .catch((error) => {
         setError(`Failed to fetch product: ${error.message}`);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, [id]);
@@ -39,6 +38,7 @@ function ProductDetails() {
   const handleDelete = async () => {
     try {
       await axios.delete(`https://fakestoreapi.com/products/${id}`);
+      clearFakeStoreCache();
       navigate("/products");
     } catch (error) {
       setError(`Failed to delete product: ${error.message}`);
@@ -47,16 +47,16 @@ function ProductDetails() {
 
   if (loading) {
     return (
-      <Container className="text-center mt-5">
+      <Container className="text-center mt-5" role="status" aria-live="polite">
         <Spinner animation="border" variant="dark" />
-        <p>Loading product...</p>
+        <p className="mt-3">Loading product...</p>
       </Container>
     );
   }
 
   if (error)
     return (
-      <Container>
+      <Container role="alert" aria-live="assertive">
         <p>{error}</p>
       </Container>
     );
@@ -71,12 +71,14 @@ function ProductDetails() {
         ← Back to Products
       </Button>
       <Row>
-        <Col md={4} className="text-center">
-          <img
-            src={product.image}
-            alt={product.title}
-            style={{ maxHeight: "300px", objectFit: "contain" }}
-          />
+        <Col md={4} className="mb-4 mb-md-0">
+          <div className="product-detail__image-wrap text-center">
+            <img
+              src={product.image}
+              alt={product.title}
+              className="product-detail__image"
+            />
+          </div>
         </Col>
         <Col md={8}>
           <h2>{product.title}</h2>
@@ -89,10 +91,15 @@ function ProductDetails() {
             <Button
               variant="dark"
               onClick={() => navigate(`/edit-product/${id}`)}
+              aria-label={`Edit product ${product.title}`}
             >
               Edit Product
             </Button>
-            <Button variant="danger" onClick={() => setShowModal(true)}>
+            <Button
+              variant="danger"
+              onClick={() => setShowModal(true)}
+              aria-label={`Delete product ${product.title}`}
+            >
               Delete Product
             </Button>
           </div>

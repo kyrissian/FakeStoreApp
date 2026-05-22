@@ -1,87 +1,145 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
-
-const formatPrice = (value) =>
-  new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(Number(value));
+import {
+  fetchProducts,
+  formatPrice,
+  CATEGORY_OPTIONS,
+} from "../utils/fakestore";
+import ProductCard from "../components/ProductCard";
 
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get("https://fakestoreapi.com/products")
-      .then((response) => {
-        setProducts(response.data);
-        setLoading(false);
+    fetchProducts()
+      .then((productsData) => {
+        setProducts(productsData);
       })
       .catch((error) => {
         setError(`Failed to fetch products: ${error.message}`);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
 
   if (loading) {
     return (
-      <Container className="text-center mt-5">
+      <Container className="text-center mt-5" role="status" aria-live="polite">
         <Spinner animation="border" variant="dark" />
-        <p>Loading products...</p>
+        <p className="mt-3">Loading products...</p>
       </Container>
     );
   }
 
   if (error)
     return (
-      <Container>
+      <Container role="alert" aria-live="assertive">
         <p>{error}</p>
       </Container>
     );
 
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      normalizedSearchTerm.length === 0 ||
+      product.title.toLowerCase().includes(normalizedSearchTerm) ||
+      product.description.toLowerCase().includes(normalizedSearchTerm);
+    const matchesCategory =
+      selectedCategory === "all" || product.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  const handleClearFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory("all");
+  };
+
   return (
-    <Container>
-      <h2 className="mb-4">Our Products</h2>
+    <Container as="section" aria-labelledby="products-heading">
+      <h2 id="products-heading" className="mb-4">
+        Our Products
+      </h2>
+      <div className="product-toolbar p-3 p-md-4 mb-4">
+        <Form
+          className="row g-3 align-items-end"
+          role="search"
+          aria-label="Filter products"
+        >
+          <div className="col-12 col-md-6">
+            <Form.Label htmlFor="product-search">Search products</Form.Label>
+            <Form.Control
+              id="product-search"
+              type="search"
+              placeholder="Search by title or description"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+            />
+          </div>
+          <div className="col-12 col-md-4">
+            <Form.Label htmlFor="category-filter">Category</Form.Label>
+            <Form.Select
+              id="category-filter"
+              value={selectedCategory}
+              onChange={(event) => setSelectedCategory(event.target.value)}
+            >
+              <option value="all">All categories</option>
+              {CATEGORY_OPTIONS.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </Form.Select>
+          </div>
+          <div className="col-12 col-md-2 d-grid">
+            <Button variant="outline-dark" onClick={handleClearFilters}>
+              Clear
+            </Button>
+          </div>
+        </Form>
+        <p className="mt-3 mb-0 text-muted">
+          Showing {filteredProducts.length} of {products.length} products
+        </p>
+      </div>
       <Row>
-        {products.map((product) => (
-          <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
-            <Card className="h-100">
-              <Card.Img
-                variant="top"
-                src={product.image}
-                style={{
-                  height: "200px",
-                  objectFit: "contain",
-                  padding: "10px",
-                }}
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+              <ProductCard
+                product={product}
+                formatPrice={formatPrice}
+                onViewDetails={(productId) =>
+                  navigate(`/products/${productId}`)
+                }
               />
-              <Card.Body className="d-flex flex-column">
-                <Card.Title style={{ fontSize: "0.9rem" }}>
-                  {product.title}
-                </Card.Title>
-                <Card.Text className="mt-auto">
-                  <strong>${formatPrice(product.price)}</strong>
-                </Card.Text>
-                <Button
-                  variant="dark"
-                  onClick={() => navigate(`/products/${product.id}`)}
-                >
-                  View Details
-                </Button>
-              </Card.Body>
-            </Card>
+            </Col>
+          ))
+        ) : (
+          <Col>
+            <div className="product-empty p-4 p-md-5 text-center">
+              <h3 className="h4 mb-2">No products match your filters</h3>
+              <p className="text-muted mb-3">
+                Try a different search term or clear the filters to see the full
+                catalog.
+              </p>
+              <Button variant="dark" onClick={handleClearFilters}>
+                Clear filters
+              </Button>
+            </div>
           </Col>
-        ))}
+        )}
       </Row>
     </Container>
   );

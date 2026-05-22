@@ -5,27 +5,17 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import {
+  CATEGORY_OPTIONS,
+  clearFakeStoreCache,
+  toTwoDecimalPrice,
+} from "../utils/fakestore";
 
 const REDIRECT_DELAY_MS = 1500;
-const toTwoDecimalPrice = (value) => {
-  const numericValue = Number(value);
-
-  if (!Number.isFinite(numericValue)) {
-    return "";
-  }
-
-  return numericValue.toFixed(2);
-};
 
 function AddProduct() {
   const navigate = useNavigate();
   const PRODUCTS_ROUTE = "/products";
-  const CATEGORY_OPTIONS = [
-    "electronics",
-    "jewelery",
-    "men's clothing",
-    "women's clothing",
-  ];
   const [formData, setFormData] = useState({
     title: "",
     price: "",
@@ -92,6 +82,7 @@ function AddProduct() {
           `Product "${response.data.title}" created successfully! ID: ${response.data.id}`,
         );
         setError(null);
+        clearFakeStoreCache();
         setFormData({ title: "", price: "", description: "", category: "" });
         setValidated(false);
       } catch (err) {
@@ -117,12 +108,22 @@ function AddProduct() {
       <h2>Add New Product</h2>
 
       {success && (
-        <Alert variant="success" dismissible onClose={() => setSuccess(null)}>
+        <Alert
+          variant="success"
+          dismissible
+          onClose={() => setSuccess(null)}
+          aria-live="polite"
+        >
           {success} Redirecting to products...
         </Alert>
       )}
       {error && (
-        <Alert variant="danger" dismissible onClose={() => setError(null)}>
+        <Alert
+          variant="danger"
+          dismissible
+          onClose={() => setError(null)}
+          aria-live="assertive"
+        >
           {error}
         </Alert>
       )}
