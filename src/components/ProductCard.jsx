@@ -20,11 +20,12 @@ function ProductCard({ product, onViewDetails, formatPrice }) {
           </Card.Title>
         </div>
         <div className="product-card__meta">
-          <Card.Text className="product-card__price mb-2">
+          <Card.Text className="product-card__price mb-2 text-center">
             <strong>${formatPrice(product.price)}</strong>
           </Card.Text>
           <Button
             variant="dark"
+            className="product-card__button"
             onClick={() => onViewDetails(product.id, product.title)}
             aria-label={`View details for ${product.title}`}
           >

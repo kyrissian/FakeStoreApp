@@ -5,6 +5,8 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import Toast from "react-bootstrap/Toast";
+import ToastContainer from "react-bootstrap/ToastContainer";
 import {
   CATEGORY_OPTIONS,
   clearFakeStoreCache,
@@ -26,6 +28,7 @@ function AddProduct() {
   const [error, setError] = useState(null);
   const [validated, setValidated] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
 
   useEffect(() => {
     if (!success) {
@@ -82,6 +85,7 @@ function AddProduct() {
           `Product "${response.data.title}" created successfully! ID: ${response.data.id}`,
         );
         setError(null);
+        setShowSuccessToast(true);
         clearFakeStoreCache();
         setFormData({ title: "", price: "", description: "", category: "" });
         setValidated(false);
@@ -98,6 +102,22 @@ function AddProduct() {
 
   return (
     <Container className="mt-3 p-5" style={{ maxWidth: "600px" }}>
+      <ToastContainer position="top-end" className="p-3">
+        <Toast
+          show={showSuccessToast && Boolean(success)}
+          onClose={() => setShowSuccessToast(false)}
+          delay={2500}
+          autohide
+          bg="success"
+          className="text-white product-toast"
+        >
+          <Toast.Header closeButton={false}>
+            <strong className="me-auto">Product created</strong>
+          </Toast.Header>
+          <Toast.Body>{success}</Toast.Body>
+        </Toast>
+      </ToastContainer>
+
       <Button
         variant="outline-dark"
         className="mb-4"
@@ -108,12 +128,7 @@ function AddProduct() {
       <h2>Add New Product</h2>
 
       {success && (
-        <Alert
-          variant="success"
-          dismissible
-          onClose={() => setSuccess(null)}
-          aria-live="polite"
-        >
+        <Alert variant="success" className="d-none" aria-live="polite">
           {success} Redirecting to products...
         </Alert>
       )}

@@ -5,13 +5,17 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
-import Spinner from "react-bootstrap/Spinner";
+import Toast from "react-bootstrap/Toast";
+import ToastContainer from "react-bootstrap/ToastContainer";
+import AsyncStatus from "../components/AsyncStatus";
 import {
   CATEGORY_OPTIONS,
   clearFakeStoreCache,
   fetchProductById,
   toTwoDecimalPrice,
 } from "../utils/fakestore";
+
+const REDIRECT_DELAY_MS = 1500;
 
 function EditProduct() {
   const { id } = useParams();
@@ -26,6 +30,19 @@ function EditProduct() {
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
   const [validated, setValidated] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+
+  useEffect(() => {
+    if (!success) {
+      return undefined;
+    }
+
+    const timeoutId = setTimeout(() => {
+      navigate(`/products/${id}`);
+    }, REDIRECT_DELAY_MS);
+
+    return () => clearTimeout(timeoutId);
+  }, [success, navigate, id]);
 
   useEffect(() => {
     fetchProductById(id)
@@ -82,6 +99,7 @@ function EditProduct() {
         );
         setSuccess(`Product "${response.data.title}" updated successfully!`);
         setError(null);
+        setShowSuccessToast(true);
         clearFakeStoreCache();
       } catch (err) {
         setError(`Failed to update product: ${err.message}`);
@@ -91,122 +109,127 @@ function EditProduct() {
     setValidated(true);
   };
 
-  if (loading) {
-    return (
-      <Container className="text-center mt-5">
-        <Spinner animation="border" variant="dark" />
-        <p>Loading product...</p>
-      </Container>
-    );
-  }
-
   return (
-    <Container className="mt-3" style={{ maxWidth: "600px" }}>
-      <Button
-        variant="outline-dark"
-        className="mb-4"
-        onClick={() => navigate(`/products/${id}`)}
-      >
-        ← Back to Product
-      </Button>
-      <h2>Edit Product</h2>
-
-      {success && (
-        <Alert variant="success" dismissible>
-          {success}
-        </Alert>
-      )}
-      {error && (
-        <Alert variant="danger" dismissible>
-          {error}
-        </Alert>
-      )}
-
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Title</Form.Label>
-          <Form.Control
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Enter product title"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a title
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Price</Form.Label>
-          <Form.Control
-            type="number"
-            min="0"
-            step="0.01"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            onBlur={handlePriceBlur}
-            placeholder="Enter price"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a price
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Enter product description"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a description
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Category</Form.Label>
-          <Form.Select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            required
+    <AsyncStatus loading={loading} loadingMessage="Loading product...">
+      <Container className="mt-3 pb-5" style={{ maxWidth: "600px" }}>
+        <ToastContainer position="top-end" className="p-3">
+          <Toast
+            show={showSuccessToast && Boolean(success)}
+            onClose={() => setShowSuccessToast(false)}
+            delay={2500}
+            autohide
+            bg="success"
+            className="text-white product-toast"
           >
-            <option hidden value="">
-              Choose a category...
-            </option>
-            {CATEGORY_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {option}
+            <Toast.Header closeButton={false}>
+              <strong className="me-auto">Product updated</strong>
+            </Toast.Header>
+            <Toast.Body>{success}</Toast.Body>
+          </Toast>
+        </ToastContainer>
+
+        <Button
+          variant="outline-dark"
+          className="mb-4 mt-5"
+          onClick={() => navigate(`/products/${id}`)}
+        >
+          ← Back to Product
+        </Button>
+        <h2>Edit Product</h2>
+
+        {success && <Alert variant="success" className="d-none" />}
+        {error && (
+          <Alert variant="danger" dismissible>
+            {error}
+          </Alert>
+        )}
+
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="Enter product title"
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a title
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              type="number"
+              min="0"
+              step="0.01"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              onBlur={handlePriceBlur}
+              placeholder="Enter price"
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a price
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Enter product description"
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a description
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Category</Form.Label>
+            <Form.Select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
+            >
+              <option hidden value="">
+                Choose a category...
               </option>
-            ))}
-          </Form.Select>
-          <Form.Control.Feedback type="invalid">
-            Please select a category
-          </Form.Control.Feedback>
-        </Form.Group>
+              {CATEGORY_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              Please select a category
+            </Form.Control.Feedback>
+          </Form.Group>
 
-        <div className="d-flex gap-2">
-          <Button variant="dark" type="submit">
-            Update Product
-          </Button>
-          <Button
-            variant="outline-dark"
-            onClick={() => navigate(`/products/${id}`)}
-          >
-            Cancel
-          </Button>
-        </div>
-      </Form>
-    </Container>
+          <div className="d-flex gap-2 mt-4 mb-5">
+            <Button variant="dark" type="submit">
+              Update Product
+            </Button>
+            <Button
+              variant="outline-dark"
+              onClick={() => navigate(`/products/${id}`)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </Form>
+      </Container>
+    </AsyncStatus>
   );
 }
 
