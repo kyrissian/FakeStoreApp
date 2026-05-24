@@ -25,6 +25,7 @@ FakeStore is a fully functional front-end E-Commerce application built with Reac
 - Polished hero section with a welcome message and store introduction
 - "Browse Products" and "Add a Product" call-to-action buttons
 - "Why It Feels Better" feature section highlighting app improvements
+- FakeStoreAPI disclaimer clearly displayed below the action buttons
 - Fully styled with custom React Bootstrap components
 
 ### 🛍 Product Listing Page
@@ -52,6 +53,7 @@ FakeStore is a fully functional front-end E-Commerce application built with Reac
 - Success toast notification on submission
 - Auto-redirects to product listing after successful creation
 - Frosted glass card wrapper styling
+- FakeStoreAPI disclaimer displayed below the submit button
 
 ### ✏️ Edit Product Page
 
@@ -60,6 +62,7 @@ FakeStore is a fully functional front-end E-Commerce application built with Reac
 - Success toast notification on update
 - Auto-redirects to product details after successful update
 - Frosted glass card wrapper styling
+- FakeStoreAPI disclaimer displayed below the submit button
 
 ### 🗑 Delete Product
 
@@ -77,6 +80,7 @@ FakeStore is a fully functional front-end E-Commerce application built with Reac
 
 - Consistent styling matching the navbar
 - Displays across all pages
+- Sticks to the bottom of the page regardless of content height
 
 ---
 
@@ -93,6 +97,7 @@ Beyond the core requirements, the following enhancements were implemented:
 - **Auto-redirect after actions** — after creating or updating a product
 - **Loading indicators** — spinners displayed while API calls are in progress
 - **Error handling** — user-friendly error messages throughout the app
+- **FakeStoreAPI disclaimer** — clearly communicated on the homepage and on the Add Product and Edit Product forms, informing users that changes will not persist
 - **Custom CSS theme** — teal/aquamarine color scheme with frosted glass effects, gradient backgrounds, and subtle grid overlay
 - **Google Fonts** — Fraunces (serif) and Inter Tight for polished typography
 - **Star rating display** — on the product details page using FakeStoreAPI rating data
@@ -187,7 +192,7 @@ Base URL: `https://fakestoreapi.com`
 
 ## ⚠️ Important Note About FakeStoreAPI
 
-FakeStoreAPI is a mock API for testing purposes. All POST, PUT, and DELETE requests will return a successful response, but **no data is actually modified** on their servers. This is expected behavior and is clearly communicated within the app.
+FakeStoreAPI is a mock API for testing purposes. All POST, PUT, and DELETE requests will return a successful response, but **no data is actually modified** on their servers. This is expected behavior and is clearly communicated within the app on the homepage and all product action forms.
 
 ---
 
