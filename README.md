@@ -21,12 +21,14 @@ FakeStore is a fully functional front-end E-Commerce application built with Reac
 ## ✨ Features
 
 ### 🏠 Home Page
+
 - Polished hero section with a welcome message and store introduction
 - "Browse Products" and "Add a Product" call-to-action buttons
 - "Why It Feels Better" feature section highlighting app improvements
 - Fully styled with custom React Bootstrap components
 
 ### 🛍 Product Listing Page
+
 - Fetches and displays all products from FakeStoreAPI
 - Search by title or description
 - Filter by category
@@ -35,6 +37,7 @@ FakeStore is a fully functional front-end E-Commerce application built with Reac
 - Smooth card hover animations
 
 ### 📄 Product Details Page
+
 - Displays full product information: image, title, description, category, and price
 - Teal-styled category badge
 - Star rating display with review count
@@ -43,6 +46,7 @@ FakeStore is a fully functional front-end E-Commerce application built with Reac
 - Redirects to product listing after deletion
 
 ### ➕ Add Product Page
+
 - Form with fields for title, price, description, and category
 - Full Bootstrap form validation with custom error messages
 - Success toast notification on submission
@@ -50,6 +54,7 @@ FakeStore is a fully functional front-end E-Commerce application built with Reac
 - Frosted glass card wrapper styling
 
 ### ✏️ Edit Product Page
+
 - Pre-fills form with existing product data
 - Full Bootstrap form validation
 - Success toast notification on update
@@ -57,16 +62,19 @@ FakeStore is a fully functional front-end E-Commerce application built with Reac
 - Frosted glass card wrapper styling
 
 ### 🗑 Delete Product
+
 - Confirmation modal before deletion
 - Redirects to product listing after deletion
 
 ### 🧭 Navigation Bar
+
 - Fully responsive React Bootstrap Navbar
 - Active link highlighting with animated underline
 - Links to Home, Products, and Add Product
 - Works correctly on mobile view with hamburger menu
 
 ### 🦶 Footer
+
 - Consistent styling matching the navbar
 - Displays across all pages
 
@@ -95,39 +103,43 @@ Beyond the core requirements, the following enhancements were implemented:
 
 ## 🛠 Technologies Used
 
-| Technology | Purpose |
-|---|---|
-| React | UI component framework |
-| React Router DOM | Client-side routing and navigation |
-| Axios | HTTP requests to FakeStoreAPI |
-| React Bootstrap | UI components and responsive layout |
-| Bootstrap | CSS framework and utilities |
-| JavaScript | Core programming language |
-| CSS3 | Custom styling and theming |
-| Vite | Development build tool |
-| FakeStoreAPI | Mock REST API for product data |
+| Technology       | Purpose                             |
+| ---------------- | ----------------------------------- |
+| React            | UI component framework              |
+| React Router DOM | Client-side routing and navigation  |
+| Axios            | HTTP requests to FakeStoreAPI       |
+| React Bootstrap  | UI components and responsive layout |
+| Bootstrap        | CSS framework and utilities         |
+| JavaScript       | Core programming language           |
+| CSS3             | Custom styling and theming          |
+| Vite             | Development build tool              |
+| FakeStoreAPI     | Mock REST API for product data      |
 
 ---
 
 ## 📦 Installation & Setup
 
 1. Clone the repository:
+
 ```bash
 git clone <your-repo-url>
 cd fakestore-app
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
 
 4. Open your browser and navigate to:
+
 ```
 http://localhost:5173
 ```
@@ -163,13 +175,13 @@ src/
 
 Base URL: `https://fakestoreapi.com`
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/products` | Fetch all products |
-| GET | `/products/:id` | Fetch a single product |
-| POST | `/products` | Create a new product |
-| PUT | `/products/:id` | Update an existing product |
-| DELETE | `/products/:id` | Delete a product |
+| Method | Endpoint        | Description                |
+| ------ | --------------- | -------------------------- |
+| GET    | `/products`     | Fetch all products         |
+| GET    | `/products/:id` | Fetch a single product     |
+| POST   | `/products`     | Create a new product       |
+| PUT    | `/products/:id` | Update an existing product |
+| DELETE | `/products/:id` | Delete a product           |
 
 ---
 
@@ -179,4 +191,4 @@ FakeStoreAPI is a mock API for testing purposes. All POST, PUT, and DELETE reque
 
 ---
 
-*Built with React as part of the Coding Temple curriculum.*
+_Built with React as part of the Coding Temple curriculum._
