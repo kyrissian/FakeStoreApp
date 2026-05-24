@@ -7,6 +7,7 @@ import ProductList from "./pages/ProductList";
 import ProductDetails from "./pages/ProductDetails";
 import AddProduct from "./pages/AddProduct";
 import EditProduct from "./pages/EditProduct";
+import Footer from "./components/Footer";
 import "./App.css";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
           </Routes>
         </RouteErrorBoundary>
       </main>
+      <Footer />
     </>
   );
 }

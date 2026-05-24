@@ -74,13 +74,25 @@ function ProductDetails() {
             <Col md={8} className="d-flex flex-column">
               <div>
                 <h2>{product.title}</h2>
-                <Badge bg="secondary" className="mb-3">
+                <Badge
+                  bg=""
+                  className="mb-3"
+                  style={{
+                    backgroundColor: "#17a589",
+                    color: "white",
+                    border: "none",
+                  }}
+                >
                   {product.category}
                 </Badge>
                 <p>{product.description}</p>
               </div>
               <div className="mt-auto pt-3">
                 <h3 className="mb-4">${formatPrice(product.price)}</h3>
+                <p className="mb-4">
+                  ⭐ <strong>{product.rating?.rate}</strong> / 5 &nbsp;·&nbsp;{" "}
+                  {product.rating?.count} reviews
+                </p>
                 <div className="d-flex gap-2">
                   <Button
                     variant="dark"

@@ -101,7 +101,7 @@ function AddProduct() {
   };
 
   return (
-    <Container className="mt-3 p-5" style={{ maxWidth: "600px" }}>
+    <Container className="mt-4" style={{ maxWidth: "650px" }}>
       <ToastContainer position="top-end" className="p-3">
         <Toast
           show={showSuccessToast && Boolean(success)}
@@ -125,109 +125,112 @@ function AddProduct() {
       >
         ← Back to Products
       </Button>
-      <h2>Add New Product</h2>
 
-      {success && (
-        <Alert variant="success" className="d-none" aria-live="polite">
-          {success} Redirecting to products...
-        </Alert>
-      )}
-      {error && (
-        <Alert
-          variant="danger"
-          dismissible
-          onClose={() => setError(null)}
-          aria-live="assertive"
-        >
-          {error}
-        </Alert>
-      )}
+      <div className="hero-panel p-4">
+        <h2 className="mb-4">Add New Product</h2>
 
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Title</Form.Label>
-          <Form.Control
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Enter product title"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a title
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Price</Form.Label>
-          <Form.Control
-            type="number"
-            min="0"
-            step="0.01"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            onBlur={handlePriceBlur}
-            placeholder="Enter price"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a price
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Enter product description"
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            Please provide a description
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Category</Form.Label>
-          <Form.Select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            required
+        {success && (
+          <Alert variant="success" className="d-none" aria-live="polite">
+            {success} Redirecting to products...
+          </Alert>
+        )}
+        {error && (
+          <Alert
+            variant="danger"
+            dismissible
+            onClose={() => setError(null)}
+            aria-live="assertive"
           >
-            <option hidden value="">
-              Choose a category...
-            </option>
-            {CATEGORY_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {option}
+            {error}
+          </Alert>
+        )}
+
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="Enter product title"
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a title
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              type="number"
+              min="0"
+              step="0.01"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              onBlur={handlePriceBlur}
+              placeholder="Enter price"
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a price
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Enter product description"
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a description
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Category</Form.Label>
+            <Form.Select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
+            >
+              <option hidden value="">
+                Choose a category...
               </option>
-            ))}
-          </Form.Select>
-          <Form.Control.Feedback type="invalid">
-            Please select a category
-          </Form.Control.Feedback>
-        </Form.Group>
+              {CATEGORY_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              Please select a category
+            </Form.Control.Feedback>
+          </Form.Group>
 
-        <div className="d-flex gap-2 mt-5">
-          <Button variant="dark" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Adding..." : "Add Product"}
-          </Button>
-          <Button
-            variant="outline-dark"
-            onClick={() => navigate(PRODUCTS_ROUTE)}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </Button>
-        </div>
-      </Form>
+          <div className="d-flex gap-2 mt-5">
+            <Button variant="dark" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Adding..." : "Add Product"}
+            </Button>
+            <Button
+              variant="outline-dark"
+              onClick={() => navigate(PRODUCTS_ROUTE)}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+          </div>
+        </Form>
+      </div>
     </Container>
   );
 }
