@@ -454,3 +454,12 @@ footer p {
   box-shadow: 0 20px 60px rgba(31, 41, 55, 0.12) !important;
   border-color: rgba(20, 143, 119, 0.2) !important;
 }
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}

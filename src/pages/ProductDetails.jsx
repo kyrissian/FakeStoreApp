@@ -110,6 +110,14 @@ function ProductDetails() {
                     Delete Product
                   </Button>
                 </div>
+                <p
+                  className="mt-3"
+                  style={{ fontSize: "0.8rem", color: "var(--muted)" }}
+                >
+                  ⚠️ This app uses FakeStoreAPI, a mock testing API. Your
+                  product will appear to be created successfully, but the data
+                  will not be permanently saved.
+                </p>
               </div>
             </Col>
           </Row>
