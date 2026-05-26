@@ -196,4 +196,10 @@ FakeStoreAPI is a mock API for testing purposes. All POST, PUT, and DELETE reque
 
 ---
 
+## 🙏 Acknowledgements
+
+This project received helpful guidance and support from GitHub Copilot and Claude during development and refinement.
+
+---
+
 _Built with React as part of the Coding Temple curriculum._
